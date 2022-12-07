@@ -19,7 +19,7 @@ int main(void)
 
     first_sum = d + i2 + i4 + j1 + j3 + j5;
     second_sum = i1 + i3 + i5 + j2 + j4;
-    total = 3*first_sum + second_sum;
+    total = 3 * first_sum + second_sum;
 
     int check = 0;
     int Check_digit = 9-((total-1)%10);

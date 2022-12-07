@@ -166,6 +166,7 @@ int main()
     // switch 语句中的 default 顺序可以任意选择(前、中、后均可)
     // case 语句中可以嵌套 if 语句，但是不能含有 continue
     // switch 语句可以嵌套使用
+    /* switch case 语句中定义变量要加 {} */
 
     int n = 1;
     int m = 2;
