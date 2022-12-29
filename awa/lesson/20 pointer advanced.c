@@ -188,6 +188,17 @@ struct Stu
     int age;
 };
 
+struct Test
+{
+    int Num;
+    char *pcName;
+    short sDate;
+    char cha[2];
+    short sBa[4];
+}* pTest;
+//假设 pTest 的值为 0x100000
+//已知结构体 Test 类型的变量大小是 20 个字节
+
 int cmp_stu_by_age(const void* e1, const void* e2)
 {
     return ((struct Stu*) e1) -> age - ((struct Stu*) e2) -> age;
@@ -232,6 +243,30 @@ void my_qsort(void* base, int sz, int width, int (*cmp)(const void* e1, const vo
             }
         }
     }
+}
+
+int getNum(int num, int i)
+{
+    int ret = num;
+    int j;
+    int tmp;
+    for (j = 0; j < i; j++)
+    {
+        num /= 10;
+    }
+    tmp = num;
+    ret = ret * 10 + tmp;
+    return ret;
+}
+
+int Sum(int num, int count, int i)
+{
+    for (; i < count;)
+    {
+        int ret = getNum(num, i);
+        return Sum(ret, count, ++i) + num;
+    }
+    return 0;
 }
 
 int main()
@@ -317,7 +352,7 @@ int main()
     {
         int arr[3][4] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
         printf("%p\n", arr);//表示第一个一维数组的地址
-        printf("%p\n", arr[0]);//表示第一个一位数组中第一个元素的地址
+        printf("%p\n", arr[0]);//表示第一个一维数组中第一个元素的地址
         printf("%d\n", arr[0][0]);//表示第一个一维数组中的第一个数
         printf("%p\n", &arr);//表示二维数组的地址
         printf("%p\n", &arr[0]);//表示第一个一维数组的地址
@@ -401,7 +436,7 @@ int main()
         //小练习 - 下面的东西代表什么？
         int arr[5];// arr 是一个 5 个元素的整型数组
         int *parr1[10];// parr1 是一个 10 个元素的指针数组
-        int (*parr2)[10];// parr2 是一个数组指针，数组中有 10 个整型元素
+        int (*parr2)[10];// parr2 是一个数组指针，数组为 int 类型，其中有 10 个整型元素
         int (*parr3[10])[5];// parr3 是一个数组，该数组有 10 个元素，每个元素是一个数组指针，该数组指针指向的数组有 5 个整型元素
     }
 
@@ -415,7 +450,7 @@ int main()
         test2(arr);
         test3(arr);
         test4(arr2);
-        test5(arr2);
+        test5(arr2);//指针数组的数组名相当于二级指针
         //都可以
     }
     //二维数组传参
@@ -737,38 +772,216 @@ int main()
     {
         // 1.
         int a[] = {1, 2, 3, 4};
-        printf("%d\n", sizeof(a));        // 16 - 数组总大小
-        printf("%d\n", sizeof(a + 0));    // 8 - 首元素地址 + 0 -> 首元素地址大小
-        printf("%d\n", sizeof(*a));       // 4 - 首元素大小
-        printf("%d\n", sizeof(a + 1));    // 8 - 第二个元素地址大小
-        printf("%d\n", sizeof(a[1]));     // 4 - 第二个元素大小
-        printf("%d\n", sizeof(&a));       // 8 - 数组的地址大小
-        printf("%d\n", sizeof(*&a));      // 16 - 整个数组地址解引用 - 整个数组的大小
-        printf("%d\n", sizeof(&a + 1));   // 8 - 整个数组之后的地址大小
-        printf("%d\n", sizeof(&a[0]));    // 8 - 首元素地址大小
-        printf("%d\n", sizeof(&a[0] + 1));// 8 - 第二个元素地址大小
+        printf("%zd\n", sizeof(a));        // 16 - 数组总大小
+        printf("%zd\n", sizeof(a + 0));    // 8 - 首元素地址 + 0 -> 首元素地址大小
+        printf("%zd\n", sizeof(*a));       // 4 - 首元素大小
+        printf("%zd\n", sizeof(a + 1));    // 8 - 第二个元素地址大小
+        printf("%zd\n", sizeof(a[1]));     // 4 - 第二个元素大小
+        printf("%zd\n", sizeof(&a));       // 8 - 数组的地址大小
+        printf("%zd\n", sizeof(*&a));      // 16 - 整个数组地址解引用 - 整个数组的大小
+        printf("%zd\n", sizeof(&a + 1));   // 8 - 整个数组之后的地址大小
+        printf("%zd\n", sizeof(&a[0]));    // 8 - 首元素地址大小
+        printf("%zd\n", sizeof(&a[0] + 1));// 8 - 第二个元素地址大小
     }
     {
         // 2.
         char arr[] = {'a', 'b', 'c', 'd', 'e', 'f'};
-        printf("%d\n", sizeof(arr));        // 6
-        printf("%d\n", sizeof(arr + 0));    // 8
-        printf("%d\n", sizeof(*arr));       // 1
-        printf("%d\n", sizeof(arr[1]));     // 1
-        printf("%d\n", sizeof(&arr));       // 8
-        printf("%d\n", sizeof(&arr + 1));   // 8
-        printf("%d\n", sizeof(&arr[0] + 1));// 8
+        printf("%zd\n", sizeof(arr));        // 6
+        printf("%zd\n", sizeof(arr + 0));    // 8
+        printf("%zd\n", sizeof(*arr));       // 1
+        printf("%zd\n", sizeof(arr[1]));     // 1
+        printf("%zd\n", sizeof(&arr));       // 8
+        printf("%zd\n", sizeof(&arr + 1));   // 8
+        printf("%zd\n", sizeof(&arr[0] + 1));// 8
 
-        printf("%d\n", strlen(arr));        // 随机值
-        printf("%d\n", strlen(arr + 0));    // 随机值
-        // printf("%d\n", strlen(*arr));    // 'a' - 97 - 访问 0x00000061 地址的内存 - 报错
-        // printf("%d\n", strlen(arr[1]));  // 'b' - 98 - 报错
-        printf("%d\n", strlen(&arr));       // 随机值
-        printf("%d\n", strlen(&arr + 1));   // 随机值 - 6
-        printf("%d\n", strlen(&arr[0] + 1));// 随机值 - 1
+        printf("%zd\n", strlen(arr));         // 随机值
+        printf("%zd\n", strlen(arr + 0));     // 随机值
+        /* printf("%d\n", strlen(*arr)); */   // 'a' - 97 - 访问 0x00000061 地址的内存 - 报错
+        /* printf("%d\n", strlen(arr[1])); */ // 'b' - 98 - 报错
+        printf("%zd\n", strlen(&arr));        // 随机值
+        printf("%zd\n", strlen(&arr + 1));    // 随机值 - 6
+        printf("%zd\n", strlen(&arr[0] + 1)); // 随机值 - 1
+    }
+    {
+        // 3.
+        char arr[] = "abcdef";
+        printf("%zd\n", sizeof(arr));         // 7
+        printf("%zd\n", sizeof(arr + 0));     // 8
+        printf("%zd\n", sizeof(*arr));        // 1
+        printf("%zd\n", sizeof(arr[1]));      // 1
+        printf("%zd\n", sizeof(&arr));        // 8
+        printf("%zd\n", sizeof(&arr + 1));    // 8
+        printf("%zd\n", sizeof(&arr[0] + 1)); // 8
 
+        printf("%zd\n", strlen(arr));          // 6
+        printf("%zd\n", strlen(arr + 0));      // 6 - 首元素地址，从此开始向后
+        /* printf("%zd\n", strlen(*arr)); */   // err - strlen 接受的是地址值
+        /* printf("%zd\n", strlen(arr[1])); */ // err
+        printf("%zd\n", strlen(&arr));         // 6
+        printf("%zd\n", strlen(&arr + 1));     // 随机值
+        printf("%zd\n", strlen(&arr[0] + 1));  // 5
+    }
+    {
+        // 4.
+        char *p = "abcdef";
+        printf("%zd\n", sizeof(p));           // 8
+        printf("%zd\n", sizeof(p + 0));       // 8
+        printf("%zd\n", sizeof(*p));          // 1
+        printf("%zd\n", sizeof(p[0]));        // 1   p[0] = *(p + 0)
+        printf("%zd\n", sizeof(&p));          // 8
+        printf("%zd\n", sizeof(&p + 1));      // 8
+        printf("%zd\n", sizeof(&p[0] + 1));   // 8
+
+        printf("%zd\n", strlen(p));           // 6
+        printf("%zd\n", strlen(p + 1));       // 5
+        /* printf("%zd\n", strlen(*p)); */    // err
+        /* printf("%zd\n", strlen(p[0])); */  // err
+        printf("%zd\n", strlen(&p));          // 随机值 - 这里取出来的是指针的地址，相当于二级指针，而 &数组名 取出来的是数组的地址，两者不能相互比较
+        printf("%zd\n", strlen(&p + 1));      // 随机值
+        printf("%zd\n", strlen(&p[0] + 1));   // 5
+    }
+    {
+        // 5.二维数组
+        int a[3][4] = { 0 };
+        printf("%zd\n", sizeof(a));             // 48 - sizeof 单独放到数组内部 - 数组总大小
+        printf("%zd\n", sizeof(a[0][0]));       // 4 - 数组第一行第一个元素
+        printf("%zd\n", sizeof(a[0]));          // 16 - 二维数组第一行所有元素
+        printf("%zd\n", sizeof(a[0] + 1));      // 8 - 二维数组第一行第二个元素的地址 - a[0] 是第一行的数组名，数组名此时是首元素的地址，其实就是第一行第一个元素的地址，所以 a[0] + 1 就是第一行第二个元素的地址，地址大小是 8 个字节
+        printf("%zd\n", sizeof(*(a[0] + 1)));   // 4 - 二维数组第一行第二个元素
+        printf("%zd\n", sizeof(a + 1));         // 8 - 二维数组第二行这个一维数组的地址 - a 是二维数组的数组名，没有 sizeof(数组名)，也没有 &数组名，所以 a 是首元素地址，而把二维数组看成多个一维数组时，二维数组的首元素是它的第一行，a 就是第一行(首元素)的地址，a + 1 就是第二行地址
+        printf("%zd\n", sizeof(*(a + 1)));      // 16 - 等价于 a[1]，二维数组第二行的一维数组数组大小
+        printf("%zd\n", sizeof(&a[0] + 1));     // 8 - 二维数组第二行的一维数组的地址
+        printf("%zd\n", sizeof(*(&a[0] + 1)));  // 16 - 二维数组第二行的一维数组的数组大小
+        printf("%zd\n", sizeof(*a));            // 16 - 二维数组第一行的一维数组的数组大小 - a 是首元素地址，*a 就是第一行，sizeof(*a) 就是计算第一行的数组大小
+        printf("%zd\n", sizeof(a[3]));          // 16 - 二维数组第四行的一维数组的数组大小 - 虽然越界了，但是 sizeof 内部的表达式不参与实际运算，只看形式
+
+        /* 总结：数组名的意义
+         * 1.sizeof(数组名)，这里的数组名表示整个数组，计算的是整个数组的大小
+         * 2.&数组名，这里的数组名表示整个数组，取出的是整个数组的地址
+         * 3.除此之外的所有数组名都表示首元素的地址 */
     }
 
+    //第二阶段
+    {
+        // 1.输出是？
+        int a[5] = {1, 2, 3, 4, 5};
+        int *ptr = (int *) (&a + 1);//强转，使减一的步长变成了整型
+        printf("%d,%d\n", *(a + 1), *(ptr - 1));
+
+        // 2 5
+
+        int (*ptr0)[5] = &a + 1;
+        printf("%d\n", **(ptr0 - 1));// 1
+    }
+    {
+        // 2.输出是？
+        /* 有关结构体 Test 见文件开头 */
+        struct Test t;//快速跳转
+        //假设 pTest 的值为 0x100000
+        //已知结构体 Test 类型的变量大小是 20(+12) (?) 个字节
+
+        printf("%zd\n", sizeof(struct Test));// 32
+
+        pTest = (struct Test *) 0x100000;
+        printf("%p\n", pTest + 0x1);
+        printf("%p\n", (unsigned long) pTest + 0x1);//强转成整型
+        printf("%p\n", (unsigned int*) pTest + 0x1);
+
+        //加上 0x1 就是加 1
+        // 0x(00)100020  0x(00)100001  0x(00)100004
+    }
+    {
+        // 3.输出是？
+        int a[4] = {1, 2, 3, 4};
+        int *ptr1 = (int *) (&a + 1);
+        int *ptr2 = (int *) ((int) a + 1);
+        /* printf("%x, %x\n", ptr1[-1], *ptr2); */
+
+        // 4 2000000
+        // ptr2 先转换成整型，加一再转换成 int*，相当于指针偏移了一个字节
+        // 01 /* 00 00 00 02 */ 00 00 00
+        //小端存储 - 02 00 00 00 打印 2000000
+        // CLion 显示段错误 awa
+    }
+    {
+        // 4.输出是？
+        int a[3][2] = {(0, 1), (2, 3), (4, 5)};
+        int *p = a[0];
+        printf("%d\n", p[0]);
+
+        // 1
+    }
+    {
+        // 5.输出是？
+        int a[5][5];
+        int (*p)[4];
+        p = a;
+        printf("%p, %d\n", &p[4][2] - &a[4][2], &p[4][2] - &a[4][2]);
+
+        // 0xfffffffffffffffc, -4
+        // a 是二维数组的首元素地址，是数组指针类型 int (*)[5]
+        //把 a 强行赋值给 p，那么 p 指向的也是首元素地址
+        //不同的是，p 的类型是 int (*)[4]，意味着 p 代表一个 4 列的二维数组
+        //那么 p[1] 指的就是首元素再加上 4 个元素(1 行)，p[4] 就是首元素加上 16 个元素
+        // p[4][2] 再加上两个元素，所以实际指的是二维数组第 19 个元素
+        // a[4][2] 指的是二维数组第五行第三个元素，也就是第 23 个元素
+        //两指针相减得到的是元素差，即 -4，%p 打印的是 -4 的原码，也就是十六进制的 0xFFFFFFFFFFFFFFFC
+    }
+    {
+        // 6.输出是？
+        int aa[2][5] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int *ptr1 = (int *) (&aa + 1);
+        int *ptr2 = (int *) (*(aa + 1));
+        printf("%d, %d\n", *(ptr1 - 1), *(ptr2 - 1));
+
+        // 10 5
+    }
+    {
+        // 7.输出是？
+        char *a[] = {"work", "at", "alibaba"};
+        char **pa = a;
+
+        pa++;
+        printf("%s\n", *pa);
+
+        // at
+    }
+    {
+        // 8.输出是？
+        char *c[] = {"ENTER", "NEW", "POINT", "FIRST"};
+        char **cp[] = {c + 3, c + 2, c + 1, c};
+        char ***cpp = cp;
+        printf("%s\n", **++cpp);
+        printf("%s\n", *--*++cpp + 3);
+        printf("%s\n", *cpp[-2] + 3);
+        printf("%s\n", cpp[-1][-1] + 1);
+
+        // POINT ER ST EW
+        //唯一需要注意的是，cpp 是时刻发生变化的(++ --)，而像 [-2] 这类的表达式不使其发生变化
+    }
+
+    // gets 函数 - 读取一行
+
+    {
+        //小练习 - 求和
+        //求 Sn = a + aa + aaa + aaaa + aaaaa 的前五项之和，其中 a 是一个数字
+
+        int a = 0;
+        int count = 0;
+        printf("请输入 a :>");
+        scanf("%d", &a);
+        printf("请输入求和项数:>");
+
+        scanf("%d", &count);
+        int ret = Sum(a, count, 0);
+        printf("ret = %d\n", ret);
+    }
+    {
+        //小练习 - 求水仙花数，范围 1 ~ 100000
+        //水仙花数是指一个数的各位数字的 n 次方之和等于本身的数
+        
+
+    }
 
     return 0;
 }

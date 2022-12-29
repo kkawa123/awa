@@ -5,6 +5,6 @@ set(CMAKE_C_STANDARD 99)
 
 add_executable(awa
         .h/add.h "test/test 28.c"
-        "test/test 36.c")
+        "lesson/20 pointer advanced.c")
 
 

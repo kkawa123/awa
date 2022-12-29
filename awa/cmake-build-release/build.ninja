@@ -55,11 +55,11 @@ build CMakeFiles/awa.dir/test/test_28.c.o: C_COMPILER__awa_Release /cygdrive/c/U
   OBJECT_DIR = CMakeFiles/awa.dir
   OBJECT_FILE_DIR = CMakeFiles/awa.dir/test
 
-build CMakeFiles/awa.dir/test/test_36.c.o: C_COMPILER__awa_Release /cygdrive/c/Users/86183/Desktop/c_study/awa/test/test$ 36.c || cmake_object_order_depends_target_awa
-  DEP_FILE = CMakeFiles/awa.dir/test/test_36.c.o.d
+build CMakeFiles/awa.dir/lesson/20_pointer_advanced.c.o: C_COMPILER__awa_Release /cygdrive/c/Users/86183/Desktop/c_study/awa/lesson/20$ pointer$ advanced.c || cmake_object_order_depends_target_awa
+  DEP_FILE = CMakeFiles/awa.dir/lesson/20_pointer_advanced.c.o.d
   FLAGS = -O3 -DNDEBUG -std=gnu99
   OBJECT_DIR = CMakeFiles/awa.dir
-  OBJECT_FILE_DIR = CMakeFiles/awa.dir/test
+  OBJECT_FILE_DIR = CMakeFiles/awa.dir/lesson
 
 
 # =============================================================================
@@ -69,7 +69,7 @@ build CMakeFiles/awa.dir/test/test_36.c.o: C_COMPILER__awa_Release /cygdrive/c/U
 #############################################
 # Link the executable awa.exe
 
-build awa.exe: C_EXECUTABLE_LINKER__awa_Release CMakeFiles/awa.dir/test/test_28.c.o CMakeFiles/awa.dir/test/test_36.c.o
+build awa.exe: C_EXECUTABLE_LINKER__awa_Release CMakeFiles/awa.dir/test/test_28.c.o CMakeFiles/awa.dir/lesson/20_pointer_advanced.c.o
   FLAGS = -O3 -DNDEBUG
   LINK_FLAGS = -Wl,--enable-auto-import
   OBJECT_DIR = CMakeFiles/awa.dir
