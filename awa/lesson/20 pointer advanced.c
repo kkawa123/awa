@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+#include <limits.h>
 
 void test1(int arr[]) //数组形式
 {}
@@ -267,6 +269,38 @@ int Sum(int num, int count, int i)
         return Sum(ret, count, ++i) + num;
     }
     return 0;
+}
+
+int* separate_num(int num, int* arr)
+{
+    int i = 0;
+    while (num)
+    {
+        arr[i] = num % 10;
+        num /= 10;
+        i++;
+    }
+    arr[6] = i;
+    return arr;
+}
+
+int get_num(int* arr, int i)
+{
+    for (int j = 0; j < i; j++)
+    {
+        int tmp;
+        int tmp0 = arr[j];//让其一次只乘一倍
+        for (tmp = 0; tmp < i - 1; tmp++)
+        {
+            arr[j] *= tmp0;
+        }
+    }
+    int sum = 0;
+    for (int j = 0; j < i; j++)
+    {
+        sum += arr[j];
+    }
+    return sum;
 }
 
 int main()
@@ -971,17 +1005,104 @@ int main()
         printf("请输入 a :>");
         scanf("%d", &a);
         printf("请输入求和项数:>");
-
         scanf("%d", &count);
+
         int ret = Sum(a, count, 0);
         printf("ret = %d\n", ret);
+
+        int ret0 = 0;
+        int sum = 0;
+        int i;
+        for (i = 0; i < count; i++)
+        {
+            ret0 = ret0 * 10 + a;
+            sum += ret0;
+        }
+        printf("ret0 = %d\n", sum);
     }
     {
-        //小练习 - 求水仙花数，范围 1 ~ 100000
+        //小练习 - 求水仙花数，范围 0 ~ 100000
         //水仙花数是指一个数的各位数字的 n 次方之和等于本身的数
-        
 
+        int count = 0;
+        while (count <= 100000)
+        {
+            int arr[7];
+            int *arr0;
+            arr0 = separate_num(count, arr);
+            int ret = get_num(arr0, arr[6]);
+            if (ret == count)
+            {
+                printf("%d\n", count);
+            }
+            count++;
+        }
+
+        for (count = 0; count < 100000; count++)
+        {
+            // 1.几位数
+            int n = 1;//最小是一位数
+            int tmp = count;
+            while (tmp /= 10)
+            {
+                n++;
+            }
+
+            // 2.求幂的和
+            tmp = count;
+            int sum = 0;
+            while (tmp)
+            {
+                sum += pow(tmp % 10, n);
+                tmp /= 10;
+            }
+
+            // 3.判断是否是自幂数
+            if (sum == count)
+            {
+                printf("%d\n", count);
+            }
+        }
     }
+    {
+        //打印菱形
+        int line;
+        printf("上半部分行数:>");
+        scanf("%d", &line);
 
+        //打印上半部分
+        int i;
+        for (i = 0; i < line; i++)
+        {
+            int j;
+            //打印空格
+            for (j = 0; j < line - 1 - i; j++)
+            {
+                printf(" ");
+            }
+            //打印 '*'
+            for (j = 0; j < 2 * i + 1; j++)
+            {
+                printf("*");
+            }
+            printf("\n");
+        }
+        //打印下半部分
+        for (i = 0; i < line - 1; i++)
+        {
+            int j;
+            //打印空格
+            for (j = 0; j < i + 1; j++)
+            {
+                printf(" ");
+            }
+            //打印 '*'
+            for (j = 0; j < 2 * (line - i - 1) - 1; j++)
+            {
+                printf("*");
+            }
+            printf("\n");
+        }
+    }
     return 0;
 }
