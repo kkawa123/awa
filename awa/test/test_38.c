@@ -211,7 +211,7 @@ int Div(char *a, char *b, char *c, char *d, int lenA, int lenB) //被除数，�
     {
         while (greater_eq(d, b, i, lenB))
         {
-            //高精减
+            //高精减 - 逆序，从后面开始减
             for (int j = 0; j < lenB; j++)
             {
                 d[i + j] -= b[j];
