@@ -209,6 +209,9 @@ int main()
         printf("%d\n", i);// 1 2 3 4 6 7 8 9 10
     }
 
+    // getchar 读取字符的时候返回 int -> 字符的 ASCII 码值
+    //如果读取失败，返回 EOF
+
     int ch0 = getchar();//此时 getchar 读取的是 \n
     int ch1 = getchar();//从键盘上接收一个字符
     putchar(ch1);//打印字符
