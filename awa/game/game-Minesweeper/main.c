@@ -64,6 +64,7 @@ int main()
 {
     srand((unsigned int)time(NULL));
     test();
+    int a;
     return 0;
 }
 

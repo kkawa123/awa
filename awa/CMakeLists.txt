@@ -4,6 +4,6 @@ project(awa C)
 set(CMAKE_C_STANDARD 99)
 
 add_executable(awa
-        .h/add.h test/luogu/2871.c)
+         test/luogu/1525.c)
 
 

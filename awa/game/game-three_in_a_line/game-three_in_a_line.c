@@ -1,7 +1,7 @@
 //
 // Created by 86183 on 2022/10/8.
 //
-#include "game-three in a line.h"
+#include "game-three_in_a_line.h"
 
 //棋盘初始化
 void InitBoard(char board[ROW][COL], int row, int col)
