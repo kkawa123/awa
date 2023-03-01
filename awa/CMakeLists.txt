@@ -4,6 +4,6 @@ project(awa C)
 set(CMAKE_C_STANDARD 99)
 
 add_executable(awa
-         test/luogu/1525.c)
+        algorithm/Merge_Sort.c)
 
 
